@@ -1,0 +1,14 @@
+#!/bin/bash
+
+_aizu() {
+  case "$3" in
+    submit)
+      COMPREPLY=(`compgen -f $2`);;
+    help)
+      COMPREPLY=();;
+    *)
+      COMPREPLY=(`compgen -W "submit help" $2`);;
+  esac
+}
+
+complete -F _aizu aizu
