@@ -1,3 +1,7 @@
+import ConfigParser
+import os.path
+import getpass
+
 def prompt(message):
     def func():
         print message,
@@ -15,7 +19,8 @@ def pass_prompt(message):
 class SpinachConfigParser:
     def __init__(self, filepath):
         self.config = ConfigParser.SafeConfigParser()
-        self.config.read(expanduser(filepath))
+        path = os.path.expanduser(filepath)
+        self.config.read(path)
     
     def get(self, section, option, default):
         if self.config.has_option(section, option):

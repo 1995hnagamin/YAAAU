@@ -1,3 +1,6 @@
+from aojtools import api
+import htmlentitydefs
+
 def html_table_row(title, data):
     return '<tr><td>' + title + '</td><td>' + data + '</td></tr>'
 
@@ -34,14 +37,6 @@ def code2html(code):
             return "&%d;" % n
     return "".join(f(ord(c)) for c in code)
 
-def create_subject(r, config):
-    subject = ''
-    subject += '(' + r['status'] + ') '
-    subject += 'New Submission for Problem ' + str(r['problem_id']) + ' '
-    subject += '#' + config.getspinach('Evernote', 'tag', 'Enter Evernote Tag:') + ' '
-    subject += '@' + config.getspinach('Evernote', 'notebook', 'Enter Evernote Notebook:')
-
-    return subject
 
 def create_judge_detail(code, response):
     body = '<html><head></head><body>'

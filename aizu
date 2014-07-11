@@ -1,17 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.Utils import formatdate
-from aojtools.submit import *
-from aojtools import api
-from os.path import *
 import argparse
-import htmlentitydefs
-import ConfigParser
-import getpass
+
+from html_message import *
+from mail import *
+from aoj_submit import *
 
 
 def aoj_help(args):

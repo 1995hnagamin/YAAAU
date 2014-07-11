@@ -1,3 +1,8 @@
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.Utils import formatdate
+
 def create_html_message(from_addr, to_addr, subject, html):
     body = MIMEText(html, 'html')
 
@@ -9,6 +14,16 @@ def create_html_message(from_addr, to_addr, subject, html):
     msg.attach(body)
 
     return msg
+
+
+def create_subject(r, config):
+    subject = ''
+    subject += '(' + r['status'] + ') '
+    subject += 'New Submission for Problem ' + str(r['problem_id']) + ' '
+    subject += '#' + config.getspinach('Evernote', 'tag', 'Enter Evernote Tag:') + ' '
+    subject += '@' + config.getspinach('Evernote', 'notebook', 'Enter Evernote Notebook:')
+
+    return subject
 
 
 def connect_smtp(url, port):

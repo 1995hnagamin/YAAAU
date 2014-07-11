@@ -1,3 +1,10 @@
+import aojtools
+import os.path
+
+import SpinachConfigParser
+import html_message
+import mail
+
 def submit_code(code, problem_id, config):
     user_id = config.getspinach('AOJ', 'id', 'Enter AOJ ID:')
     password = config.getpass('AOJ', 'pass', 'Enter AOJ Password:')
@@ -12,7 +19,7 @@ def submit_code(code, problem_id, config):
     print 'language: ' + code['lang']
     print 'Submitting solution to AOJ...'
 
-    response = submit(info)
+    response = aojtools.submit.submit(info)
     return response
 
 
@@ -33,7 +40,7 @@ def read_code(filename):
     f = open(filename)
     code = f.read()
 
-    root, ext = splitext(filename)
+    root, ext = os.path.splitext(filename)
     lang = ext2lang(ext)
 
     info = {
@@ -45,7 +52,7 @@ def read_code(filename):
 
 
 def aoj_submit(args):
-    config = SpinachConfigParser('~/.yaau')
+    config = SpinachConfigParser.SpinachConfigParser('~/.yaau')
 
     filename = args.filename
     problem_id = args.problem
@@ -59,7 +66,7 @@ def aoj_submit(args):
     print r['status']
     print 'TIME:' + str(r['cputime']) + ', MEMORY:' + str(r['memory'])
 
-    html = create_judge_detail(code['body'], r)
+    html = html_message.create_judge_detail(code['body'], r)
 
-    manage_html_message(config, html, r)
+    mail.manage_html_message(config, html, r)
 
