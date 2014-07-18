@@ -6,8 +6,12 @@ import html_message
 import mail
 
 def submit_code(code, problem_id, config):
-    user_id = config.getspinach('AOJ', 'id', 'Enter AOJ ID:')
-    password = config.getpass('AOJ', 'pass', 'Enter AOJ Password:')
+    user_id = config.getspinach('General', 'aojid',
+            'Enter ID for AOJ:')
+    
+    password = config.getpass('General', 'aojpass',
+            'Enter password for %s:' % user_id)
+
     info = {
             'user_id': user_id,
             'password': password,
@@ -53,7 +57,7 @@ def read_code(filename):
 
 
 def aoj_submit(args):
-    config = SpinachConfigParser.SpinachConfigParser('~/.yaau')
+    config = SpinachConfigParser.SpinachConfigParser('~/.yaaau')
 
     filename = args.filename
     problem_id = args.problem

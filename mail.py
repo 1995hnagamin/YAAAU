@@ -20,8 +20,10 @@ def create_subject(r, config):
     subject = ''
     subject += '(' + r['status'] + ') '
     subject += 'New Submission for Problem ' + str(r['problem_id']) + ' '
-    subject += '#' + config.getspinach('Evernote', 'tag', 'Enter Evernote Tag:') + ' '
-    subject += '@' + config.getspinach('Evernote', 'notebook', 'Enter Evernote Notebook:')
+    subject += '#' + config.getspinach('submit',
+            'tag', 'Enter Evernote Tag:') + ' '
+
+    subject += '@' + config.getspinach('submit', 'notebook', 'Enter Evernote Notebook:')
 
     return subject
 
@@ -42,21 +44,22 @@ def login_smtp(smtp, userid, password):
 
 
 def send_mail_smtp(smtp, from_addr, to_addr, msg):
-    print 'Sending e-mail...'
+    print 'Sending email...'
     smtp.sendmail(from_addr, to_addr, msg.as_string())
     smtp.quit()
 
 
 def manage_html_message(config, html, r):
-    smtp_url = config.getspinach('Gmail', 'url', 'Enter SMTP URL:')
-    smtp_port = config.getspinach('Gmail', 'port', 'Enter SMTP Port:')
+    smtp_url = config.getspinach('submit', 'url', 'Enter SMTP URL:')
+    smtp_port = config.getspinach('submit', 'port', 'Enter Port for %s:' % smtp_url)
     s = connect_smtp(smtp_url, smtp_port)
 
-    smtp_id = config.getspinach('Gmail', 'id', 'Enter Gmail address:')
-    smtp_pass = config.getpass('Gmail', 'pass', 'Enter Gmail Password:')
+    smtp_id = config.getspinach('submit', 'id',
+            'Enter ID for %s' % smtp_url)
+    smtp_pass = config.getpass('submit', 'pass', 'Enter password for %s:' % smtp_id)
     s = login_smtp(s, smtp_id, smtp_pass)
 
-    to_addr = config.getspinach('Evernote', 'address', 'Enter Evernote mailaddress:')
+    to_addr = config.getspinach('submit', 'destination', 'Enter destination mailaddress:')
     
     subject = create_subject(r, config)
 
