@@ -50,7 +50,7 @@ def send_mail_smtp(smtp, from_addr, to_addr, msg):
 
 
 def manage_html_message(config, html, r):
-    smtp_url = config.getspinach('submit', 'url', 'Enter SMTP URL:')
+    smtp_url = config.getspinach('submit', 'host', 'Enter SMTP URL:')
     smtp_port = config.getspinach('submit', 'port', 'Enter Port for %s:' % smtp_url)
     s = connect_smtp(smtp_url, smtp_port)
 
