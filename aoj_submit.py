@@ -24,16 +24,17 @@ def submit_code(code, problem_id, config):
 
 
 def ext2lang(ext):
-    if ext == '.cc':
-        lang = 'C++'
-    elif ext == '.java':
-        lang = 'JAVA'
-    elif ext == '.c':
-        lang = 'C'
-    else:
-        lang = ''
+    table = {
+            '.c': 'C',
+            '.cc': 'C++',
+            '.java': 'JAVA'
+            }
 
-    return lang
+    if table.has_key(ext):
+        return table[ext]
+    else:
+        ask = SpinachConfigParser.prompt('Enter Language:')
+        return ask()
 
 
 def read_code(filename):

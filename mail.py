@@ -36,7 +36,7 @@ def connect_smtp(url, port):
 
 
 def login_smtp(smtp, userid, password):
-    print 'Logging in as "' + userid + '"...'
+    print 'Logging in as ' + userid + '...'
     smtp.login(userid, password)
     return smtp
 
