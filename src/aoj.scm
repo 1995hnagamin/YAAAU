@@ -1,7 +1,7 @@
 (define-module aoj
   (use rfc.http)
   (use sxml.ssax)
-  (export aoj-submit aoj-status-log))
+  (export aoj-submit aoj-status-log aoj-submission-result))
 
 (select-module aoj)
 
@@ -20,6 +20,21 @@
   `(list ,@(map (lambda (prop)
                   `(list (quote ,prop) ,prop))
                 properties)))
+
+(define (wait-for-value proc limit second default-proc)
+  (let loop ((limit limit))
+       (cond
+         ((zero? limit) (default-proc))
+         ((proc) => identity)
+         (else (begin
+                 (sys-sleep second)
+                 (loop (- limit 1)))))))
+
+(define (assoc-chain-ref aalist keys :optional (default #f) (eq-fn eq?))
+  (cond
+    ((null? keys) aalist)
+    ((assoc-ref aalist (car keys)) => (cut assoc-chain-ref <> (cdr keys) default eq-fn))
+    (else #f)))
 
 (define (http-error-description code)
   (case (string-ref code 0)
@@ -66,3 +81,23 @@
       (build-uri
         "/onlinejudge/webservice/submit"
         (make-alist userID sourceCode problemNO language password)))))
+
+(define (aoj-latest-status user-id)
+  (aoj-status-log :user_id user-id :limit 1))
+
+(define (aoj-submission-result user-id source-code problem-no language password
+                               :optional (attempt-limits 5) (waiting-time 5))
+    (let1 run-id (car (assoc-chain-refassoc-chain-ref (aoj-latest-status user-id)
+                                                      '(status run-id)))
+      (aoj-submit user-id source-code problem-no language password)
+      (wait-for-value 
+        (lambda ()
+          (let1 latest-status (aoj-latest-status user-id)
+            (print "HOGEHOGEHOGE")
+            (if (string=? run-id
+                          (car (assoc-chain-ref latest-status '(staus run_id))))
+              #f
+              latest-status)))
+        attempt-limits
+        waiting-time
+        (cut raise "aoj-submission-result: could not get submission result"))))

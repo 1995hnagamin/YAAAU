@@ -53,7 +53,8 @@
          (password (get-password))
          (source-code (filename->string filename))
          (lang (or lang (get-extension filename))))
-    (aoj-submit user-id source-code pid lang password)))
+    (print 
+      (aoj-submission-result user-id source-code pid lang password))))
 
 (define (browse-problem args)
   (if (null? args)
