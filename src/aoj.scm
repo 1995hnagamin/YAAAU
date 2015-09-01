@@ -86,16 +86,15 @@
   (aoj-status-log :user_id user-id :limit 1))
 
 (define (aoj-submission-result user-id source-code problem-no language password
-                               :optional (attempt-limits 5) (waiting-time 5))
-    (let1 run-id (car (assoc-chain-refassoc-chain-ref (aoj-latest-status user-id)
-                                                      '(status run-id)))
+                               :optional (attempt-limits 5) (waiting-time 10))
+    (let1 run-id (car (assoc-chain-ref (aoj-latest-status user-id)
+                                                      '(status run_id)))
       (aoj-submit user-id source-code problem-no language password)
       (wait-for-value 
         (lambda ()
           (let1 latest-status (aoj-latest-status user-id)
-            (print "HOGEHOGEHOGE")
             (if (string=? run-id
-                          (car (assoc-chain-ref latest-status '(staus run_id))))
+                          (car (assoc-chain-ref latest-status '(status run_id))))
               #f
               latest-status)))
         attempt-limits
