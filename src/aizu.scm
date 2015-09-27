@@ -58,11 +58,12 @@
   (let* ((user-id (get-userID))
          (password (get-password))
          (source-code (filename->string filename))
-         (lang (or lang (get-extension filename))))
-    (print 
-      (aoj-submission-result user-id source-code pid lang password
-                             (get-attempt-limit)
-                             (get-waiting-time)))))
+         (lang (or lang (get-extension filename)))
+         (result (aoj-submission-result user-id source-code pid lang password
+                                        (get-attempt-limit)
+                                        (get-waiting-time))))
+    (let ((print-result (compose print remove-newline)))
+      (print-result (car (assoc-chain-ref result '(status status)))))))
 
 (define (browse-problem args)
   (if (null? args)

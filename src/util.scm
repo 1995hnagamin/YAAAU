@@ -1,5 +1,8 @@
 (use gauche.parseopt)
 
+(define 1- (cut - <> 1))
+(define 1+ (cut + <> 1))
+
 (define-macro (apuntil pred? obj . body)
   `(let1 it #f
      (while (begin
@@ -49,6 +52,16 @@
       ((null? entry) (default))
       ((assoc key (car entry)) => cdr)
       (else (search (cdr entry))))))
+
+(define (assoc-chain-ref aalist keys :optional (default #f) (eq-fn eq?))
+  (cond
+    ((null? keys) aalist)
+    ((assoc-ref aalist (car keys) default eq-fn) 
+     => (cut assoc-chain-ref <> (cdr keys) default eq-fn))
+    (else default)))
+
+(define (remove-newline str)
+  (substring str 1 (1- (string-length str))))
 
 (define default-extantion-table
   '(("c" . "C")
