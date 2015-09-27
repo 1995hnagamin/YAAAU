@@ -65,3 +65,11 @@
     ("scala" . "Scala")
     ("hs" . "Haskell")
     ("ml" . "OCaml")))
+
+(define help-message "\
+  usage: aizu <command> [<args>]\n\
+  \n\
+  commands:\n\
+  submit  Submit solution\n\
+  browse  Browse problem page on web browser\n\
+  help    show this help\n")

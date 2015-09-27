@@ -73,6 +73,9 @@
          ,(string-append "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id="
                          (car args))))))
 
+(define (show-help arg)
+  (print help-message))
+
 (define (main args)
   (if (null? (cdr args))
     (usage (car args))
@@ -83,7 +86,7 @@
          . restargs)
       (case-with string=? sub
         (("browse") (browse-problem restargs))
-        (("help") (show-help (car args)))
+        (("help") (show-help restargs))
         (("submit") (submit (car restargs) pid lang))
         (else (error (format "unknown command: ~a" sub)))))))
 
