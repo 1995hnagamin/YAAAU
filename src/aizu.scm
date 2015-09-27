@@ -39,6 +39,12 @@
 (define get-user-defined-extension-table
   (make-attr-getter 'extensions (lambda () '())))
 
+(define get-attempt-limit
+  (make-attr-getter 'attemplt-limit (lambda () 5)))
+
+(define get-waiting-time
+  (make-attr-getter 'waiting-time (lambda () 10)))
+
 (define (get-extension filename)
   (search-entry (path-extension filename)
                 (list (get-user-defined-extension-table)
@@ -54,7 +60,9 @@
          (source-code (filename->string filename))
          (lang (or lang (get-extension filename))))
     (print 
-      (aoj-submission-result user-id source-code pid lang password))))
+      (aoj-submission-result user-id source-code pid lang password
+                             (get-attempt-limit)
+                             (get-waiting-time)))))
 
 (define (browse-problem args)
   (if (null? args)

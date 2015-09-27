@@ -86,12 +86,13 @@
   (aoj-status-log :user_id user-id :limit 1))
 
 (define (aoj-submission-result user-id source-code problem-no language password
-                               :optional (attempt-limits 5) (waiting-time 10))
+                               :optional (attempt-limits 5) (waiting-time 5))
     (let1 run-id (car (assoc-chain-ref (aoj-latest-status user-id)
                                                       '(status run_id)))
       (aoj-submit user-id source-code problem-no language password)
       (wait-for-value 
         (lambda ()
+          (print "waiting for judge result ...")
           (let1 latest-status (aoj-latest-status user-id)
             (if (string=? run-id
                           (car (assoc-chain-ref latest-status '(status run_id))))
