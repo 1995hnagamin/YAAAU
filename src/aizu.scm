@@ -76,6 +76,9 @@
 (define (show-help arg)
   (print help-message))
 
+(define (show-version)
+  (print version-message))
+
 (define (main args)
   (if (null? (cdr args))
     (usage (car args))
@@ -88,5 +91,6 @@
         (("browse") (browse-problem restargs))
         (("help") (show-help restargs))
         (("submit") (submit (car restargs) pid lang))
+        (("version") (show-version))
         (else (error (format "unknown command: ~a" sub)))))))
 

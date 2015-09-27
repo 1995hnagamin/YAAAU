@@ -73,3 +73,5 @@
   submit  Submit solution\n\
   browse  Browse problem page on web browser\n\
   help    show this help\n")
+
+(define version-message "0.0")
